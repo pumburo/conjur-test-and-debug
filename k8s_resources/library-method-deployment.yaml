@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: library-app
+  name: library-app
+  namespace: conjur-uygulama-test
+spec:
+  selector:
+    matchLabels:
+      app: library-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: library-app
+    spec:
+      serviceAccountName: test-app-sa
+      containers:
+        - name: library-app
+          image: 'pumburo/library-test-2:1.3'
+          ports:
+            - containerPort: 8080
+          envFrom:
+          - configMapRef:
+              name: conjur-cm
+          volumeMounts:
+          - mountPath: /run/conjur
+            name: conjur-access-token
+            readOnly: true
+      initContainers:
+      - image: cyberark/conjur-authn-k8s-client
+        imagePullPolicy: Always
+        name: authenticator
+        env:
+          - name: CONTAINER_MODE
+            value: init
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        envFrom:
+          - configMapRef:
+              name: conjur-cm
+        volumeMounts:
+          - mountPath: /run/conjur
+            name: conjur-access-token
+      volumes:
+        - name: conjur-access-token
+          emptyDir:
+            medium: Memory

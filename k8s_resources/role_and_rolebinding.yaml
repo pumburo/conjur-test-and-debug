@@ -1,0 +1,25 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secrets-access
+  namespace: conjur-uygulama-test
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: [ "get", "update" ]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: conjur-uygulama-test
+  name: secrets-access-binding
+subjects:
+  - kind: ServiceAccount
+    namespace: conjur-uygulama-test
+    name: test-app-sa
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: secrets-access # follower'ı kurarken oluşturulan role
