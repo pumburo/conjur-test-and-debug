@@ -3,12 +3,12 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: conjur-authn-rolebinding
-  namespace: conjur-uygulama-test
+  namespace: conjur-uygulama-test # secret cekecek uygulamanin calisacagi ns
 subjects:
 - kind: ServiceAccount
-  name: conjur-serviceaccount
+  name: conjur-serviceaccount # follower'in kullandigi sa
   namespace: conjur-ns # follower'in oldugu namespace
 roleRef:
   kind: ClusterRole
-  name: conjur-clusterrole
+  name: conjur-clusterrole # follower'in kullandigi sa'in bind edildigi clusterrole
   apiGroup: rbac.authorization.k8s.io
