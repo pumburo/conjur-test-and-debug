@@ -17,10 +17,10 @@ Build alınan image'ın openshift üzerinde kullanabilmesi için image registry'
 
 # Gerekli k8s kaynakları
 
-**serviceaccount**
-**role**
-**rolebinding**
-**configmap**
+- **serviceaccount**
+- **role**
+- **rolebinding**
+- **configmap**
 
 # Kurulum Adımları
 
@@ -29,7 +29,8 @@ Build alınan image'ın openshift üzerinde kullanabilmesi için image registry'
 - **role_and_rolebinding.yaml** dosyası yorum satırlarındaki yönergelere göre editlendikten sonra **oc aplly -f role_and_rolebinding.yaml** komutu ile apply edilmeli.
 - **give_access_to_follower.yaml** dosyası içerisindeki ilgili alanlar yorum satırlarındaki verilere göre editlendikten sonra **oc apply -f give_access_to_follower.yaml** komutu ile apply edilmeli.
 - **create_follower_connection_configmap.sh** dosyası içerisindeki değişkenlere yorum satırlarındaki açıklandığı şekilde değerler girilmelidir. Değerler girildikten sonra **chmod +x create_follower_connection_configmap.sh** komutu ile dosya executable yapılır ve ardından **./create_follower_connection_configmap.sh** komutu ile script çalıştırılır.
-**NOT:** Scriptin ürettiği çıktı kontrol edilmeli ve doğru ise ekrana **y** yazılıp devam edilmeli. Eğer scriptin ürettiği output hatalı ise script içine yazılmış değişkenler tekrar editlenip script yeniden çalıştırılmalı.
+# **NOT** 
+Scriptin ürettiği çıktı kontrol edilmeli ve doğru ise ekrana **y** yazılıp devam edilmeli. Eğer scriptin ürettiği output hatalı ise script içine yazılmış değişkenler tekrar editlenip script yeniden çalıştırılmalı.
 - **library-method-deployment.yaml** dosyası içerisindeki namespace ve image alanları önceki adımlardaki bilgilere göre editlenmelidir. Edit sonrası **oc apply -f library-method-deployment.yaml** komutu ile deployment apply edilditen sonra ilgili ns altında pod oluşacaktır.
 - **oc get po** komutu ile podlar listelenir ve **library-app-XXXX** podu running duruma geçtiğinde **oc logs -f library-app-XXXX** komutu ile loglardan secretlar okunabilir.
 **NOT:* Çalışan go kodu ve configmap 2 adet scret çekecek şekilde tasarlanmıştır. Go kodu içerisinde 1 adet secret çekilmek istenirse değişken değersiz kalacağından kod hata verecektir. Tek değişken yada daha fazla değişken çekilmek istendiği takdirde kod düzenlenmelidir.
