@@ -23,7 +23,6 @@ func main() {
         panic(err)
     }
     for true {
-        // Retrieve a secret into []byte.
         secretUsernameValue, err := conjur.RetrieveSecret(secretUsername)
         secretPasswordValue, err := conjur.RetrieveSecret(secretPassword)
         
@@ -33,9 +32,6 @@ func main() {
        fmt.Println("The username value is: ", string(secretUsernameValue))
        fmt.Println("The password value is: ", string(secretPasswordValue))
 
-       // Retrieve a secret into io.ReadCloser, then read into []byte.
-       // Alternatively, you can transfer the secret directly into secure memory,
-       // vault, keychain, etc.
        secretUsernameResponse, err := conjur.RetrieveSecretReader(secretUsername)
        secretPasswordResponse, err := conjur.RetrieveSecretReader(secretPassword)
        if err != nil {
